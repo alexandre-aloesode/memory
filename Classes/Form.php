@@ -10,6 +10,18 @@ class Form {
 
     }
 
+
+    public function start_form($method) {
+
+        return '<form method="' . $method . '">';
+    }
+
+
+    public function end_form() {
+
+        return '</form>';
+    }
+
 //grâce au construct et à la fonction ci-dessous je récupère les données tapées par l'utilisateur si par exemple son envoi de form fail pour x raison, afin qu'il n'ait pas à tout retaper.
     public function getValue($index) {
 

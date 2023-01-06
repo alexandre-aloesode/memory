@@ -5,6 +5,7 @@
 
     session_id() == '' ? session_start() : null ;
 
+
 // Au démarrage du jeu je crée 5 variables de session.
     // -turn qui me permet de compter les coups et me sert à la génération des cartes
     // -found_cards: tableau vide dans lequel je stocke les paires trouvées et me permet de les garder retournées pendant le reste de la partie 
@@ -99,6 +100,19 @@
     if(empty($_SESSION['remaining_cards'])) {
         echo 'GG';
     }
+
+    if(empty($_SESSION['remaining_cards']) && isset($_POST['card'])) {
+       
+        if(isset($_SESSION['user'])) {
+
+        require './Classes/User.php';
+
+        $user = new User();
+
+        $user->save_game('novice', $_SESSION['turn'], 'OUI');
+
+        }
+    }
 ?>
 
 <!DOCTYPE html>
@@ -114,35 +128,42 @@
 
 <body>
 
-<?php include 'header.php' ?>
+<?php 
 
-    <form method="post">
+    include 'header.php';
 
-        <?php
+    require './Classes/Form.php';
+
            
-            $alice1 = new Card('alice1');
+    $alice1 = new Card('alice1');
 
-            $kagura1 = new Card('kagura1');
+    $kagura1 = new Card('kagura1');
 
-            $pharsa1 = new Card('pharsa1');
+    $pharsa1 = new Card('pharsa1');
 
-            $valir1 = new Card('valir1');
+    $valir1 = new Card('valir1');
 
-            $minotaur1 = new Card('minotaur1');
+    $minotaur1 = new Card('minotaur1');
 
-            $cyclops1 = new Card('cyclops1');
+    $cyclops1 = new Card('cyclops1');
 
-            $alice2 = new Card('alice2');
+    $alice2 = new Card('alice2');
 
-            $kagura2 = new Card('kagura2');
+    $kagura2 = new Card('kagura2');
 
-            $pharsa2 = new Card('pharsa2');
+    $pharsa2 = new Card('pharsa2');
 
-            $valir2 = new Card('valir2');
+    $valir2 = new Card('valir2');
 
-            $minotaur2 = new Card('minotaur2');
+    $minotaur2 = new Card('minotaur2');
             
-            $cyclops2 = new Card('cyclops2');
+    $cyclops2 = new Card('cyclops2');
+
+    $form = new Form();
+
+    echo $form->start_form('post');
+
+        if(!empty($_SESSION['remaining_cards'])) {
 
 // Pour démarrer le jeu et générer les cartes aléatoirement, je stocke mes instances de cartes dans un tableau $cards. 
 // Je boucle ensuite sur $cards et array_rand me permet de générer les cartes aléatoirement
@@ -167,7 +188,7 @@
                     array_push($_SESSION['game'], $cards[$random_card]);
 
                     unset($cards[$random_card]);
-                
+                        
                 }
             }
 
@@ -177,19 +198,31 @@
 // Si la carte ne se trouve dans aucun de ces 2 tableaux, je la garde retournée.
 
             else {
-                
+                        
                 for($i = 0; isset($_SESSION['game'][$i]); $i++) {
 
                     echo in_array($_SESSION['game'][$i]->name, $_SESSION['found_cards']) || 
-                         in_array($_SESSION['game'][$i]->name, $_SESSION['chosen_cards']) || 
-                         in_array($_SESSION['game'][$i]->name, $_SESSION['last_round_cards']) ?
-                         $_SESSION['game'][$i]->display_card() : $_SESSION['game'][$i]->display_back();
+                        in_array($_SESSION['game'][$i]->name, $_SESSION['chosen_cards']) || 
+                        in_array($_SESSION['game'][$i]->name, $_SESSION['last_round_cards']) ?
+                        $_SESSION['game'][$i]->display_card() : $_SESSION['game'][$i]->display_back();
                 }
             }
-            
-        ?>
+                    
+            echo $form->buttonWithID('reset', 'reset', 'reset');
 
-        <button type="submit" name="reset" id="reset">Reset</button>
+        }
+
+        if(empty($_SESSION['remaining_cards'])) {
+
+            echo 'Félicitations ! Vous avez trouvé toutes les paires en ' . $_SESSION['turn'] . ' coups.';
+
+            echo $form->buttonWithID('reset', 'reset', 'reset');
+        }
+
+            echo $form->end_form();
+
+?>
+
 
     </form> 
 

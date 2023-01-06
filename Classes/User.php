@@ -1,5 +1,7 @@
 <?php
 
+use Symfony\Component\Validator\Constraints\Timezone;
+
 class User {
 
     private $id;
@@ -253,6 +255,23 @@ class User {
         session_destroy();
 
         header('Location: index.php');
+    }
+
+
+
+
+    public function save_game($difficulte, $coups, $finie) {
+
+        $date = new DateTime("now"); new DateTimezone("Europe/Paris");
+
+        $this->get_user_info();
+        
+        $request_add_game = "INSERT INTO $difficulte (date, finie, coups, id_utilisateur) VALUES (:date, :finie, :coups, :id_utilisateur)";
+
+        $query_add_user = $this->bdd->prepare($request_add_game);
+
+        $query_add_user->execute(array(':date' => $date->format('Y-m-d H:i'), ':finie' => $finie, ':coups' => $coups, ':id_utilisateur' => $this->id));
+
     }
 
 }

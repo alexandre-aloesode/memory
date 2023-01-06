@@ -25,12 +25,5 @@
         </button>';
     }
 
-    // public function getNumber() {
-
-    //     return $this->number;
-    // }
-
-
-
     }
 ?>

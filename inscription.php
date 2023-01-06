@@ -7,7 +7,7 @@
         session_id() == '' ? session_start() : null;
 
         $user = new User();
-        $user->register();
+        $user->register($_SESSION['turn']);
     }
     
 ?>
