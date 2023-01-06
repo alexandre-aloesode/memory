@@ -18,7 +18,7 @@
 
         return
         
-        '<button type="submit" name="card" value="' . $this->name .'">
+        '<button type="submit" name="card" class="card" value="' . $this->name .'">
 
             <img src="./images/back-side.jpg" class="card">
 

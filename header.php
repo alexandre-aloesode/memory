@@ -17,6 +17,7 @@
         <ul>
 
             <li><a href="index.php">Accueil</a></li>
+            <li><a href="memory.php">Jouer</a></li>
             
         </ul>
     </nav>
