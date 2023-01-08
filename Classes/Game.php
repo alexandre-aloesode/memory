@@ -9,28 +9,28 @@
 
         private $selected_pairs = [];
 
-        private $random_pair;
+        private $random_card;
 
         public function __construct($difficulty) {
 
-            if($difficulty == 'novice')  $this->level = 6 ;
+            if($difficulty == 'Novice')  $this->level = 6 ;
 
-            if($difficulty == 'intermediaire') $this->level = 8 ;
+            if($difficulty == 'Intermediaire') $this->level = 8 ;
 
-            if($difficulty == 'expert') $this->level = 10 ;
+            if($difficulty == 'Expert') $this->level = 10 ;
         }
 
         public function select_pairs() {
 
             for($x = 0; $x < $this->level; $x++) {
 
-                $this->random_pair = array_rand($this->characters);
+                $this->random_card = array_rand($this->characters);
 
-                    array_push($this->selected_pairs, $this->characters[$this->random_pair] . '1');
+                    array_push($this->selected_pairs, $this->characters[$this->random_card] . '1');
 
-                    array_push($this->selected_pairs, $this->characters[$this->random_pair] . '2');
+                    array_push($this->selected_pairs, $this->characters[$this->random_card] . '2');
 
-                    unset($this->characters[$this->random_pair]);
+                    unset($this->characters[$this->random_card]);
             }
 
             shuffle($this->selected_pairs);

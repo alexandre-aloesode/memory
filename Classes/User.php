@@ -1,7 +1,5 @@
 <?php
 
-use Symfony\Component\Validator\Constraints\Timezone;
-
 class User {
 
     private $id;

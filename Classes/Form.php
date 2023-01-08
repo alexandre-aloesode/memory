@@ -16,6 +16,11 @@ class Form {
         return '<form method="' . $method . '">';
     }
 
+    public function start_form_with_id($method, $id) {
+
+        return '<form method="' . $method . '" id="' . $id . '">';
+    }
+
 
     public function end_form() {
 
@@ -28,6 +33,12 @@ class Form {
 //opérateur ternaire prenant trois opérandes : une condition, une déclaration de résultat pour vrai et une déclaration de résultat pour faux. 
 //Avant le point d'interrogation la condition, et séparés par les 2 points mes 2 déclarations de résultat.
         return isset($this->data[$index]) ? $this->data[$index] : null ;
+    }
+
+    public function text($balise, $message) {
+
+        return '<' . $balise . '>' . $message . '</' . $balise . '>';
+
     }
 
 
@@ -78,6 +89,16 @@ class Form {
     public function buttonWithID($name, $id, $desc) {
 
         return '<button type="submit" name="' . $name . '" id="' . $id .'">' . $desc . '</button>' ;
+    }
+
+    public function button_with_class($name, $class, $desc) {
+
+        return '<button type="submit" name="' . $name . '" class="' . $class .'">' . $desc . '</button>' ;
+    }
+
+    public function button_with_class_and_value($name, $class, $desc) {
+
+        return '<button type="submit" name="' . $name . '" class="' . $class .'" value="' . $desc . '">' . $desc . '</button>' ;
     }
 
 }
