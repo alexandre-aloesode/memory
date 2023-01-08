@@ -7,11 +7,13 @@
     public function __construct($card) {
 
         $this->name = $card;
+        
+        array_push($_SESSION['game'], $this);
     }
 
     public function display_card() {
 
-        return '<img src="./images/' . $this->name .'.jpg" class="card">';
+        return '<img src="./images/' . substr($this->name , 0, -1).'.jpg" class="card">';
     }
 
     public function display_back() {

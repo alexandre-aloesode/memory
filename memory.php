@@ -3,8 +3,46 @@
 // Pour éviter l'erreur "PHP CLASS INCOMPLETE" je dois require ma class avant de démarrer ma session.
     require './Classes/Card.php';
 
+    require './Classes/Game.php';
+
     session_id() == '' ? session_start() : null ;
 
+    if(!isset($_SESSION['turn']) || isset($_POST['reset'])) {
+
+        $game = new Game('novice');
+
+        $game = $game->select_pairs();
+
+//    -Pour la suite du jeu j'ai besoin de conserver l'ordre de distribution. Quand la partie commence je crée donc $_SESSION[game] qui comprend toutes mes cartes
+// Dans le construct de chaque carte j'ai ajouté un push automatique dans cette variable.
+
+        $_SESSION['game'] = [];
+            
+        $card1 = new Card($game[0]);
+
+        $card2 = new Card($game[1]);
+
+        $card3 = new Card($game[2]);
+
+        $card4 = new Card($game[3]);
+
+        $card5 = new Card($game[4]);
+
+        $card6 = new Card($game[5]);
+
+        $card7 = new Card($game[6]);
+
+        $card8 = new Card($game[7]);
+
+        $card9 = new Card($game[8]);
+
+        $card10 = new Card($game[9]);
+
+        $card11 = new Card($game[10]);
+                
+        $card12 = new Card($game[11]);
+
+    }
 
 // Au démarrage du jeu je crée 5 variables de session.
     // -turn qui me permet de compter les coups et me sert à la génération des cartes
@@ -26,7 +64,8 @@
 
         $_SESSION['last_round_cards'] = [];
 
-        $_SESSION['remaining_cards'] = ['alice1', 'alice2', 'kagura1', 'kagura2', 'pharsa1', 'pharsa2', 'minotaur1', 'minotaur2', 'valir1', 'valir2', 'cyclops1', 'cyclops2'];
+        $_SESSION['remaining_cards'] = [$card1->name, $card2->name, $card3->name, $card4->name, $card5->name, $card6->name, $card7->name, $card8->name, 
+        $card9->name, $card10->name, $card11->name, $card12->name];
     }
 
     if(isset($_POST['reset'])) {
@@ -39,7 +78,8 @@
 
         $_SESSION['last_round_cards'] = [];
 
-        $_SESSION['remaining_cards'] = ['alice1', 'alice2', 'kagura1', 'kagura2', 'pharsa1', 'pharsa2', 'minotaur1', 'minotaur2', 'valir1', 'valir2', 'cyclops1', 'cyclops2'];
+        $_SESSION['remaining_cards'] = [$card1->name, $card2->name, $card3->name, $card4->name, $card5->name, $card6->name, $card7->name, $card8->name, 
+        $card9->name, $card10->name, $card11->name, $card12->name];
 
         header('Location: memory.php');
     }
@@ -94,9 +134,6 @@
     }
 
 // Ma condition de victoire
-    if(empty($_SESSION['remaining_cards'])) {
-        echo 'GG';
-    }
 
     if(empty($_SESSION['remaining_cards']) && isset($_POST['card'])) {
        
@@ -110,6 +147,9 @@
 
         }
     }
+
+    var_dump($_SESSION['remaining_cards']);
+
 ?>
 
 <!DOCTYPE html>
@@ -137,111 +177,73 @@
 
         <div id="game">
 
-        <div id="count">
+            <div id="count">
 
-            <p>Nombre de coups :</p>
+                <p>Nombre de coups :</p>
 
-            <p> <?= isset($_SESSION['turn']) ? $_SESSION['turn'] : null ?> </p>
+                <p> <?= isset($_SESSION['turn']) ? $_SESSION['turn'] : null ?> </p>
 
-        </div>
+            </div>
 
-<?php 
+            <?php 
 
 
-    require './Classes/Form.php';
-         
-    $alice1 = new Card('alice1');
+                require './Classes/Form.php'; 
 
-    $kagura1 = new Card('kagura1');
+                $form = new Form();
 
-    $pharsa1 = new Card('pharsa1');
+                echo $form->start_form('post');
 
-    $valir1 = new Card('valir1');
+                    if(!empty($_SESSION['remaining_cards'])) {
 
-    $minotaur1 = new Card('minotaur1');
 
-    $cyclops1 = new Card('cyclops1');
+                        if($_SESSION['turn'] == 0) {   
 
-    $alice2 = new Card('alice2');
+                            // $_SESSION['game'] = [$card1, $card2, $card3, $card4, $card5, $card6, $card7, $card8, $card9, $card10, $card11, $card12];
 
-    $kagura2 = new Card('kagura2');
+                            for($x = 0; $x < 12; $x++) {
 
-    $pharsa2 = new Card('pharsa2');
-
-    $valir2 = new Card('valir2');
-
-    $minotaur2 = new Card('minotaur2');
-            
-    $cyclops2 = new Card('cyclops2');
-
-    $form = new Form();
-
-    echo $form->start_form('post');
-
-        if(!empty($_SESSION['remaining_cards'])) {
-
-// Pour démarrer le jeu et générer les cartes aléatoirement, je stocke mes instances de cartes dans un tableau $cards. 
-// Je boucle ensuite sur $cards et array_rand me permet de générer les cartes aléatoirement
-// A chaque tour de boucle :
-//    -je génère une carte avec array_rand
-//    -j'affiche la carte retournée
-//    -Pour la suite du jeu j'ai besoin de conserver l'ordre de distribution. Je crée donc $_SESSION[game] qui se remplit à chaque tour de boucle avec la carte générée
-//    -Enfin j'enlève la carte de mon tableau $cards pour ne pas qu'elle soit générée une 2ème fois
-
-            if($_SESSION['turn'] == 0) {   
-
-                $cards=[$alice1, $alice2, $kagura1, $kagura2, $pharsa1, $pharsa2, $valir1, $valir2, $minotaur1, $minotaur2, $cyclops1, $cyclops2];
-
-                $_SESSION['game'] = [];
-
-                for($x = 0; $x < 12; $x++) {
-
-                    $random_card = array_rand($cards);
-
-                    echo $cards[$random_card]->display_back();
-
-                    array_push($_SESSION['game'], $cards[$random_card]);
-
-                    unset($cards[$random_card]);
-                        
-                }
-            }
+                                echo $_SESSION['game'][$x]->display_back();
+                                    
+                            }
+                        }
 
 // Pour le reste de la partie, grâce à $_SESSION[game] j'ai mon ordre de distribution conservé. J'ai donc juste à boucler dessus pour afficher les cartes.
-// Si la carte fait partie d'une paire trouvée, elle reste affichée, si elle est dans chosen_cards, donc fait partie des 2 cartes que l'utilisateur a choisit de retourner pendant
+// Si la carte fait partie d'une paire trouvée, elle reste affichée, si elle est dans chosen_cards ou last round cards, donc fait partie des 2 cartes que l'utilisateur a choisit de retourner pendant
 // le tour en cours, elle est affichée
-// Si la carte ne se trouve dans aucun de ces 2 tableaux, je la garde retournée.
+// Si la carte ne se trouve dans aucun de ces 3 tableaux, je la garde retournée.
 
-            else {
-                        
-                for($i = 0; isset($_SESSION['game'][$i]); $i++) {
+                        else {
+                                    
+                            for($i = 0; isset($_SESSION['game'][$i]); $i++) {
 
-                    echo in_array($_SESSION['game'][$i]->name, $_SESSION['found_cards']) || 
-                        in_array($_SESSION['game'][$i]->name, $_SESSION['chosen_cards']) || 
-                        in_array($_SESSION['game'][$i]->name, $_SESSION['last_round_cards']) ?
-                        $_SESSION['game'][$i]->display_card() : $_SESSION['game'][$i]->display_back();
-                }
-            }
-                    
-            // echo $form->buttonWithID('reset', 'reset', 'reset');
+                                echo in_array($_SESSION['game'][$i]->name, $_SESSION['found_cards']) || 
+                                    in_array($_SESSION['game'][$i]->name, $_SESSION['chosen_cards']) || 
+                                    in_array($_SESSION['game'][$i]->name, $_SESSION['last_round_cards']) ?
+                                    $_SESSION['game'][$i]->display_card() : $_SESSION['game'][$i]->display_back();
+                            }
+                        }
+                                
+                        // echo $form->buttonWithID('reset', 'reset', 'reset');
 
-        }
+                    }
 
-        if(empty($_SESSION['remaining_cards'])) {
+                    if(empty($_SESSION['remaining_cards'])) {
 
-            echo 'Félicitations ! Vous avez trouvé toutes les paires en ' . $_SESSION['turn'] . ' coups. <br>';
+                        echo 'Félicitations ! Vous avez trouvé toutes les paires en ' . $_SESSION['turn'] . ' coups. <br>';
 
-            echo 'Votre score:' . ($_SESSION['turn'] / 6) ; 
+                        echo 'Votre score:' . ($_SESSION['turn'] / 6) ; 
 
-            echo '<br> Score = nombre coups / nombre paires';
+                        echo '<br> Score = nombre coups / nombre paires';
 
-            echo $form->buttonWithID('reset', 'reset', 'reset');
-        }
+                        echo $form->buttonWithID('reset', 'reset', 'reset');
+                    }
 
-    echo $form->end_form();
+                echo $form->end_form();
 
-?>
-    </div>
+            ?>
+
+        </div>
 
     </main>
 
