@@ -2,6 +2,7 @@
 
     class Card {
 
+        
     public $name;
 
     public function __construct($card) {
@@ -11,18 +12,41 @@
         array_push($_SESSION['game'], $this);
     }
 
-    public function display_card() {
+    public function display_card($level) {
 
-        return '<img src="./images/' . substr($this->name , 0, -1).'.jpg" class="card">';
+        if($level == 'Novice') return '<img src="./images/' . substr($this->name , 0, -1).'.jpg" class="card-novice">';
+
+        if($level == 'Intermediaire') return '<img src="./images/' . substr($this->name , 0, -1).'.jpg" class="card-intermediaire">';
+
+        if($level == 'Expert') return '<img src="./images/' . substr($this->name , 0, -1).'.jpg" class="card-expert">';
+
     }
 
-    public function display_back() {
+    public function display_back($level) {
 
-        return
+        if($level == 'Novice') return
         
-        '<button type="submit" name="card" class="card" value="' . $this->name .'">
+        '<button type="submit" name="card" class="card-novice" value="' . $this->name .'">
 
-            <img src="./images/back-side.jpg" class="card">
+            <img src="./images/back-side.jpg" class="card-novice">
+
+        </button>';
+
+
+        if($level == 'Intermediaire') return
+        
+        '<button type="submit" name="card" class="card-intermediaire" value="' . $this->name .'">
+
+            <img src="./images/back-side.jpg" class="card-intermediaire">
+
+        </button>';
+
+
+        if($level == 'Expert') return
+        
+        '<button type="submit" name="card" class="card-expert" value="' . $this->name .'">
+
+            <img src="./images/back-side.jpg" class="card-expert">
 
         </button>';
     }

@@ -2,10 +2,12 @@
 
 
     class Game {
-
+        /**
+         * @var array contains card names
+         */
         private $characters = ['alice', 'kagura', 'pharsa', 'minotaur','valir','cyclops', 'natalia', 'grock', 'eudora', 'popol', 'yve', 'badang', 'karrie', 'moskov'];
         
-        private $level;
+        public $level;
 
         private $selected_pairs = [];
 
@@ -20,6 +22,9 @@
             if($difficulty == 'Expert') $this->level = 10 ;
         }
 
+        /**
+         * @var function 
+         */
         public function select_pairs() {
 
             for($x = 0; $x < $this->level; $x++) {

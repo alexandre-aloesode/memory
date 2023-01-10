@@ -17,9 +17,22 @@
         <ul>
 
             <li><a href="index.php">Accueil</a></li>
+            
             <li><a href="memory.php">Jouer</a></li>
             
         </ul>
+    </nav>
+
+    <nav>
+        <ul>
+            
+            <li>Compteur de coups : </li>
+
+            <li> <?= isset($_SESSION['turn']) ? floor($_SESSION['turn'] / 2)  : null ?> </li>
+
+        </ul>
+
+
     </nav>
 
     <nav>

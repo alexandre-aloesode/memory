@@ -1,36 +1,320 @@
-#game {
+body {
+    margin: 0;
+    background-color: #F8F4F9;
+    background-image: url(./images/bg.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    opacity: 0.90;
+}
 
+main {
+    display: flex;
+    flex-direction: column;
+    margin: 10%;
+    margin-top: 50px;
+    align-items: center;
+    min-height: 80vh;
+
+}
+
+
+/* --------------------------------------------------------------------------------HEADER -----------------------------------------------------------------------------------*/
+
+header{
+    display: flex;
+    justify-content: space-between; 
+    height: 10vh;
+    align-items: center;
+    padding-left: 10px;
+    padding-right: 30px;
+    font-size: 200%;
+
+}
+
+nav {
+    display: flex;
+    margin-top: 0;
+}
+    
+    nav ul{
+        display: flex;
+        gap: 30px;
+        align-items: center;
+
+    }
+    nav ul a {
+        text-decoration: none;
+        color: black;
+    }
+
+    nav ul a:hover {
+        color: purple;
+        text-decoration: underline purple;
+        transition-duration: 0.3s;
+    }
+    nav ul li {
+        list-style-type: none;
+        color: black;
+    }
+
+    nav form {
+        border: none;
+        text-decoration: none;
+
+    }
+
+    nav button {
+        border: none;
+        text-decoration: none;
+        color: white;
+        background: none;
+        font-size: 95%;
+
+    }
+
+    nav button:hover {
+        color: purple;
+        text-decoration: underline purple;
+        transition-duration: 0.3s;
+    }
+
+
+
+/* --------------------------------------------------------------------------------FORMULAIRES -----------------------------------------------------------------------------------*/
+
+.formulaire {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: none;
+    border-radius: 10px;
+    background-color: white;
+    padding: 30px;
+    width: 30%;
+    font-size: 120%;
+    box-shadow: 5px 5px 5px 5px white;
+    position: relative;
+    opacity: 0.80;
+}
+
+.formulaire h2 {
+    background-color: white;
+    border-bottom: solid 2px #0E4E95;
+    font-size: 120%;
+    padding-bottom: 20px;
+    margin-bottom: 20px;
     display: flex;
     width: 100%;
+    justify-content: center;
+    }
+
+.formulaire h3 {
+    background-color: white;
+    font-size: 120%;
+    padding-bottom: 20px;
+    margin-bottom: 10px;
+    color: red;
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    }
+
+    .formulaire label {
+        display: flex;
+        justify-content: center;
+        width: 80%;
+        background-color: white;
+        font-size: 90%;
+    }
+
+    .formulaire input {
+        width: 80%;
+        height: 50px;
+        border-radius: 5px;
+        border: 1px solid #6B4B3E;
+        outline-color: #0E4E95;
+        background-color: white;
+        font-size: 100%;
+    }
+    
+    .formulaire button {
+        height: 40px;
+        font-size: 100%;
+        border-radius: 5px;
+        background-color: #0E4E95;
+        color: white;
+        border: none;
+        width: 50%;
+    }
+
+    .formulaire button:hover {
+        transform: scale(1.05);
+        transition-duration: 0.5s;
+    } 
+
+    #delete_profile {
+        background-color: red;
+        padding: 20px;
+        height: fit-content;
+        margin-top: 40px;
+    }
+
+    #confirm_delete {
+        margin-top: 40px;
+        background-color: red;
+    }
+
+
+      .password_with_eye
+      /* .password-container input[type="text"]{ */
+        {
+            position: relative !important;
+      }
+
+    .fa-eye {
+        position: absolute;
+        top: 70%;
+        right: 15%;
+        cursor: pointer;
+      }
+
+/* --------------------------------------------------------------------------------JEU -----------------------------------------------------------------------------------*/
+
+#level_choice {
+        
+    display: flex;
+    flex-direction: column;
+    font-size: 130%;
     align-items: center;
 }
 
-    #count {
+    .level_button {
 
-        /* border: solid 1px black; */
+        font-size: 120%;
         padding: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        width: 10%;
+        width: 50%;
+        margin-bottom: 30px;
+        border-radius: 10px;
+        background-color: transparent;
+        border-color: black;
+    }
 
+    .level_button:hover {
+
+        background-color: black;
+        color: white;
+        transition-duration: 0.5s;
     }
 
 
-    form {
+#game {
 
-        display: flex;
-        flex-wrap: wrap;
-        width: 85%;
-        padding: 0;
-    }
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+    padding: 0;
+    position: relative;
+}
 
-    
-    .card {
+    .card-novice {
 
-        width: 130px;
-        height: 260px;
+        width: 195px;
+        height: 380px;
         margin-right: 15px;
         margin-bottom: 40px;
         padding: 0;
+        border-radius: 5px;
     }
+
+    .card-intermediaire {
+
+        width: 150px;
+        height: 300px;
+        margin-right: 15px;
+        margin-bottom: 40px;
+        padding: 0;
+        border-radius: 5px;
+    }
+
+    .card-expert {
+
+        width: 120px;
+        height: 240px;
+        margin-right: 15px;
+        margin-bottom: 40px;
+        padding: 0;
+        border-radius: 5px;
+    }
+
+    #win { 
+
+        background-color: rgba(0, 0, 0, 0.623);
+        color: white;
+        position: absolute;
+        padding: 20px;
+        top: 30px;
+        margin-right: auto;
+        margin-left: auto;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    #win_img {
+        width: 35%;
+    }
+
+    .win_button {
+
+        font-size: 120%;
+        padding: 20px;
+        width: 50%;
+        margin-bottom: 30px;
+        border-radius: 10px;
+        background-color: transparent;
+        border-color: white;
+        color: white;
+    }
+
+    .win_button:hover {
+
+        background-color: white;
+        color: black;
+        transition-duration: 0.5s;
+    }
+
+
+
+/* --------------------------------------------------------------------------------FOOTER -----------------------------------------------------------------------------------*/
+
+
+footer {
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    height: 10vh;
+    padding-left: 50px;
+    padding-right: 50px;
+}
+    
+    #copyright {
+        font-size: 120%;
+    }
+    
+    #links {
+        font-size: 300%;
+        width: 25%;
+    }
+    
+    #arrow_top {
+        font-size: 300%;
+        }
+    
+    footer a {
+        text-decoration: none;
+        color: black;
+        }
