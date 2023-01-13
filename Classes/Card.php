@@ -9,7 +9,6 @@
 
         $this->name = $card;
         
-        array_push($_SESSION['game'], $this);
     }
 
     public function display_card($level) {

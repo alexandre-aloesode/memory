@@ -1,6 +1,6 @@
 <?php 
 
-    session_id() == '' ? session_start() : null;
+    if(session_id() == '') session_start();
 
     if(isset($_GET['deco']) && $_GET['deco'] == 'deco'){
         
@@ -25,10 +25,14 @@
 
     <nav>
         <ul>
-            
-            <li>Compteur de coups : </li>
 
-            <li> <?= isset($_SESSION['turn']) ? floor($_SESSION['turn'] / 2)  : null ?> </li>
+            <?php if(isset($_SESSION['turn']) && $_SERVER['REQUEST_URI'] == '/memory/memory.php'): ?>
+            
+                <li>Compteur de coups : </li>
+
+                <li> <?= isset($_SESSION['turn']) ? floor($_SESSION['turn'] / 2)  : null ?> </li>
+
+            <?php endif ?>
 
         </ul>
 

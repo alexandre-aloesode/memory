@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -14,7 +16,33 @@
 <body>
     <?php include 'header.php' ?>
 
-    <main></main>
+    <main>
+
+        <div id="tables">
+
+        <?php
+
+            include './Classes/Rankings.php';
+
+            $ranking_novice = new Ranking('Novice');
+
+            $ranking_novice->display_ranking();
+
+
+            $ranking_intermediaire = new Ranking('Intermediaire');
+
+            $ranking_intermediaire->display_ranking();
+
+
+            $ranking_expert = new Ranking('Expert');
+
+            $ranking_expert->display_ranking();
+
+        ?>
+
+        </div>
+        
+    </main>
 
     <?php include 'footer.php' ?>
 

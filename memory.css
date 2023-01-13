@@ -66,7 +66,7 @@ nav {
     nav button {
         border: none;
         text-decoration: none;
-        color: white;
+        color: black;
         background: none;
         font-size: 95%;
 
@@ -76,6 +76,36 @@ nav {
         color: purple;
         text-decoration: underline purple;
         transition-duration: 0.3s;
+    }
+
+
+
+
+/* --------------------------------------------------------------------------------Index -----------------------------------------------------------------------------------*/
+
+#tables {
+    display: flex;
+    flex-direction: column; 
+}
+
+    .game_table {
+        margin-bottom: 80px;
+        border-collapse: collapse;
+        border: solid 2px red;
+    }
+
+    .game_table td {
+        max-width: 250px;
+        text-align: center;
+        word-wrap: break-word;
+        border-bottom: solid 1px black;
+    }
+
+    .game_table th {
+        border-bottom: solid 1px black;
+        padding: 30px;
+        margin-bottom: 20px;
+
     }
 
 
@@ -285,7 +315,49 @@ nav {
         transition-duration: 0.5s;
     }
 
+@media screen and (max-width:1720px){
 
+    .card-novice {
+    
+        width: 180px;
+        height: 360px;
+    }
+    
+    .card-intermediaire {
+    
+        width: 130px;
+        height: 260px;
+    }
+    
+    .card-expert {
+    
+        width: 100px;
+        height: 200px;
+        margin-right: 15px;
+        margin-bottom: 40px;
+        padding: 0;
+        border-radius: 5px;
+    }
+}
+    
+
+
+/* --------------------------------------------------------------------------------PROFIL -----------------------------------------------------------------------------------*/
+
+#profile_info {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    width: 100%;
+}
+
+    #last_games {
+        width: 30%;
+    }
+
+    #profile_info form {
+        width: 40%;
+    }
 
 /* --------------------------------------------------------------------------------FOOTER -----------------------------------------------------------------------------------*/
 

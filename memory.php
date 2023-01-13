@@ -5,7 +5,7 @@
 
     require './Classes/Game.php';
 
-    session_id() == '' ? session_start() : null ;
+    if(session_id() == '')  session_start() ;
 
     if(isset($_POST['change_level'])) {
 
@@ -27,13 +27,13 @@
             $game = $game->select_pairs();
 
 // Pour la suite du jeu j'ai besoin de conserver l'ordre de distribution. Quand la partie commence je crée donc $_SESSION[game] qui comprend toutes mes cartes
-// Dans le construct de chaque carte j'ai ajouté un push automatique dans cette variable.
+// Dans ce tableau je push à chaque fois une nouvelle classe Card qui aura un attribut name, me servant à faire mes comparaisons.
 
             $_SESSION['game'] = [];
 
             for($x = 0; $x < ($level * 2); $x++) {
 
-                ${'card' . ($x + 1)} = new Card($game[$x]);
+                array_push($_SESSION['game'], new Card($game[$x]));
                 
             }
 
@@ -81,7 +81,7 @@
         }
 
 // Tous les 2 tours, je check si les 2 cartes sélectionnées font une paire. Vu que les cartes ont un attribut name suivi d'un numéro, 1 ou 2,
-// je dois retirer le numéro pour faire ma comparaison. J'ai donc 2 variables, card1 et card2, et la fonction substr me permet d'enlever le numéro du name.
+// je dois retirer le numéro pour faire ma comparaison. J'ai donc 2 variables, first_card et second_card, et la fonction substr me permet d'enlever le numéro du name.
 // Avant ça, j'ajoute les 2 cartes du tour en cours dans last_round_cards pour que l'utilisateur puisse les voir même s'il n'a pas trouvé de paire
 // Si une paire a été trouvée, je la rajoute dans le tableau des found_cards et supprime les 2 cartes du tableau remaining_cards.
 // Enfin, je vide le tableau chosen_cards pour démarrer un nouveau tour.
@@ -90,11 +90,11 @@
 
             array_push($_SESSION['last_round_cards'], $_SESSION['chosen_cards'][0],$_SESSION['chosen_cards'][1]);
 
-            $card1 = substr($_SESSION['chosen_cards'][0], 0 , -1);
+            $first_card = substr($_SESSION['chosen_cards'][0], 0 , -1);
 
-            $card2 = substr($_SESSION['chosen_cards'][1], 0 , -1);
+            $second_card = substr($_SESSION['chosen_cards'][1], 0 , -1);
 
-            if($card1 == $card2) {
+            if($first_card == $second_card) {
 
                 array_push($_SESSION['found_cards'], $_SESSION['chosen_cards'][0],$_SESSION['chosen_cards'][1]);
 
@@ -114,7 +114,9 @@
             }
 
             $_SESSION['chosen_cards'] = [];
+            
         }
+
     
 //A chaque tour impair, je check si le tableau des last_round_cards contient quelque chose, et si c'est le cas je le vide.
         if($_SESSION['turn'] % 2 !== 0 && $_SESSION['turn'] > 0 && !empty($_SESSION['last_round_cards'])) {
@@ -132,7 +134,7 @@
 
             $user = new User();
 
-            $user->save_game($_SESSION['level'], $_SESSION['turn'], 'OUI');
+            $user->save_game($_SESSION['level'], 'OUI', $_SESSION['turn']);
 
             }
 
@@ -166,31 +168,28 @@
 
             <?php 
 
-
                 require './Classes/Form.php'; 
 
-                
+                if(!isset($_SESSION['level'])) {
 
-                    if(!isset($_SESSION['level'])) {
+                    $form_level = new Form();   
 
-                        $form_level = new Form();   
+                    echo $form_level->start_form_with_id('post' , 'level_choice');
 
-                        echo $form_level->start_form_with_id('post' , 'level_choice');
+                        echo $form_level->text('h1', 'Bienvenue, à quel niveau souhaitez-vous jouer?');
 
-                            echo $form_level->text('h1', 'Bienvenue, à quel niveau souhaitez-vous jouer?');
+                        echo $form_level->button_with_class_and_value('level', 'level_button', 'Novice');
 
-                            echo $form_level->button_with_class_and_value('level', 'level_button', 'Novice');
+                        echo $form_level->button_with_class_and_value('level', 'level_button', 'Intermediaire');
 
-                            echo $form_level->button_with_class_and_value('level', 'level_button', 'Intermediaire');
+                        echo $form_level->button_with_class_and_value('level', 'level_button', 'Expert');
 
-                            echo $form_level->button_with_class_and_value('level', 'level_button', 'Expert');
+                    echo $form_level->end_form();
+                }
 
-                        echo $form_level->end_form();
-                    }
+                $form = new Form();
 
-                    $form = new Form();
-
-                    echo $form->start_form_with_id('post', 'game');
+                echo $form->start_form_with_id('post', 'game');
 
                     if(isset($_SESSION['level'])) {
 
@@ -205,7 +204,7 @@
                                 echo $_SESSION['game'][$x]->display_back($_SESSION['level']);
                                     
                             }
-                        }
+                    }
 
 // Si la carte fait partie d'une paire trouvée, elle reste affichée, si elle est dans chosen_cards ou last round cards, donc fait partie des 2 cartes que l'utilisateur 
 //a choisit de retourner pendant le tour en cours, elle est affichée
@@ -216,9 +215,9 @@
                             for($i = 0; isset($_SESSION['game'][$i]); $i++) {
 
                                 echo in_array($_SESSION['game'][$i]->name, $_SESSION['found_cards']) || 
-                                    in_array($_SESSION['game'][$i]->name, $_SESSION['chosen_cards']) || 
-                                    in_array($_SESSION['game'][$i]->name, $_SESSION['last_round_cards']) ?
-                                    $_SESSION['game'][$i]->display_card($_SESSION['level']) : $_SESSION['game'][$i]->display_back($_SESSION['level']);
+                                     in_array($_SESSION['game'][$i]->name, $_SESSION['chosen_cards']) || 
+                                     in_array($_SESSION['game'][$i]->name, $_SESSION['last_round_cards']) ?
+                                     $_SESSION['game'][$i]->display_card($_SESSION['level']) : $_SESSION['game'][$i]->display_back($_SESSION['level']);
                             }
                         }
                                 

@@ -42,63 +42,73 @@
 
     <main>
 
-        <form method="post" class ="formulaire">
-        
-        <?php if(isset($_SESSION['userID']) && isset($_POST['delete_profile'])): ?>
+        <div id="profile_info">
+
+            <div id="last_games">
+
+            <?php $user->display_last_games($_SESSION['userID'])?>
             
-            <h3>Vous êtes sur le point de supprimer votre profil, ainsi que vos réservations.</h3>
+            </div>
 
-            <button type="submit" id="cancel_delete" name="cancel_delete">Annuler</button>
+            <form method="post" class ="formulaire">
+            
+            <?php if(isset($_SESSION['userID']) && isset($_POST['delete_profile'])): ?>
+                
+                <h3>Vous êtes sur le point de supprimer votre profil, ainsi que vos réservations.</h3>
 
-            <button type="submit" id="confirm_delete" name="confirm_delete">Confirmer</button>
+                <button type="submit" id="cancel_delete" name="cancel_delete">Annuler</button>
+
+                <button type="submit" id="confirm_delete" name="confirm_delete">Confirmer</button>
 
 
-        <?php elseif(isset($_SESSION['userID']) || isset($_POST['cancel_delete'])): ?>
+            <?php elseif(isset($_SESSION['userID']) || isset($_POST['cancel_delete'])): ?>
 
-            <h2>MODIFICATION DE PROFIL</h2>
+                <h2>MODIFICATION DE PROFIL</h2>
 
-            <h3> <?= isset($_POST['profile_change']) ? $user->message : null ?> </h3>
+                <h3> <?= isset($_POST['profile_change']) ? $user->message : null ?> </h3>
 
-            <?php
+                <?php
 
-            require './Classes/Form.php';
+                require './Classes/Form.php';
 
-            $form = new Form($_POST);
+                $form = new Form($_POST);
 
 //A la consultation de son profil je veux afficher les infos existantes de l'utilsateur, mais s'il a effectué des modifs et la validation a échoué 
 //je veux que ses modifs soient conservées, sauf pour les MDP.
-            echo $form->label('login', 'Pseudo* :');
-            echo isset($_POST['profile_change']) ? $form->inputPOST('text', 'login') : $form->inputWithValue('text', 'login', $user->login);
+                echo $form->label('login', 'Pseudo* :');
+                echo isset($_POST['profile_change']) ? $form->inputPOST('text', 'login') : $form->inputWithValue('text', 'login', $user->login);
 
 
-            echo $form->label('new_mdp', 'Nouveau MDP* :');
-            echo isset($_POST['profile_change']) ? $form->inputPOST('password', 'new_mdp') : $form->inputNoValue('text', 'new_mdp');
+                echo $form->label('new_mdp', 'Nouveau MDP* :');
+                echo isset($_POST['profile_change']) ? $form->inputPOST('password', 'new_mdp') : $form->inputNoValue('text', 'new_mdp');
 
 
-            echo $form->label('new_mdp_confirm', 'Confirmez votre nouveau MDP* :');
-            echo $form->inputNoValue('password', 'new_mdp_confirm');
+                echo $form->label('new_mdp_confirm', 'Confirmez votre nouveau MDP* :');
+                echo $form->inputNoValue('password', 'new_mdp_confirm');
 
 
-            echo $form->label('mdp', 'Tapez votre ancien MDP pour confirmer les changements');
-            echo $form->inputNoValue('password', 'mdp');
+                echo $form->label('mdp', 'Tapez votre ancien MDP pour confirmer les changements');
+                echo $form->inputNoValue('password', 'mdp');
 
 
-            echo $form->button('profile_change', 'Modifier');
-            
+                echo $form->button('profile_change', 'Modifier');
+                
 
-            echo $form->buttonWithID('delete_profile', 'delete_profile', 'Supprimer mon compte')
-            
+                echo $form->buttonWithID('delete_profile', 'delete_profile', 'Supprimer mon compte')
+                
             ?>
         
 
-        <?php elseif(!isset($_SESSION['userID'])): ?>
+            <?php elseif(!isset($_SESSION['userID'])): ?>
 
-            <h3> Pas de compte, pas de profil ! </h3>
+                <h3> Pas de compte, pas de profil ! </h3>
 
-        <?php endif ?>
+            <?php endif ?>
+            
+            </form>
+
+        </div>
         
-        </form>
-
     </main>
 
     <?php include 'footer.php' ?>

@@ -21,6 +21,8 @@ class User {
 
         $this->bdd = new PDO('mysql:host=localhost;dbname=memory;charset=utf8', 'root','');
 
+        //$this->bdd = new PDO('mysql:host=localhost;dbname=alexandre-aloesode_memory;charset=utf8', 'Namrod','azertyAZERTY123!');
+
         $this->bdd->setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
 
         }
@@ -183,10 +185,10 @@ class User {
  
     $this->check = 1 ;
 
-        if(empty($_POST['login']) || empty($_POST['mdp']) || empty($_POST['email']) || trim($_POST['login']) == '' || trim($_POST['mdp']) == '' || trim($_POST['email']) == '') {
+        if(empty($_POST['login']) || empty($_POST['mdp']) || trim($_POST['login']) == '' || trim($_POST['mdp']) == '') {
 
             $this->check = 0;
-            $this->message = 'Certains champs indispensables sont vides';
+            $this->message = 'Certains champs sont vides';
         }
 
         if($_POST['new_mdp'] !== $_POST['new_mdp_confirm']) {
@@ -237,6 +239,7 @@ class User {
         $query_update_user_profile->execute(array(':login' => $_POST['login'], ':password' => $modified_mdp_hashed, ':id' => $_SESSION['userID']));
 
         $this->message = "informations modifiées.";
+        
         }
     }
 
@@ -258,17 +261,72 @@ class User {
 
 
 
-    public function save_game($difficulte, $coups, $finie) {
+    public function save_game($difficulte, $finie, $coups) {
 
         $date = new DateTime("now"); new DateTimezone("Europe/Paris");
 
         $this->get_user_info();
         
-        $request_add_game = "INSERT INTO $difficulte (date, finie, coups, id_utilisateur) VALUES (:date, :finie, :coups, :id_utilisateur)";
+        $request_add_game = "INSERT INTO parties (date, difficulte, finie, coups, id_utilisateur) VALUES (:date, :difficulte, :finie, :coups, :id_utilisateur)";
 
-        $query_add_user = $this->bdd->prepare($request_add_game);
+        $query_add_game = $this->bdd->prepare($request_add_game);
 
-        $query_add_user->execute(array(':date' => $date->format('Y-m-d H:i'), ':finie' => $finie, ':coups' => $coups, ':id_utilisateur' => $this->id));
+        $query_add_game->execute(array(':date' => $date->format('Y-m-d H:i'), ':difficulte' => $difficulte, ':finie' => $finie, ':coups' => $coups / 2, ':id_utilisateur' => $this->id));
+
+    }
+
+    public function display_last_games($userID) {
+
+        $request_last_games = "SELECT * FROM parties
+        INNER JOIN utilisateurs on parties.id_utilisateur = utilisateurs.id
+        WHERE utilisateurs.id = $userID
+        LIMIT 10";
+
+        $query_last_games = $this->bdd->prepare($request_last_games);
+        $query_last_games->execute();
+
+        $result_last_games = $query_last_games->fetchAll();
+
+        echo '<table class="game_table">
+
+                    <thead>
+
+                        <h2>Dernières parties</h2>
+
+                        <tr>
+
+                            <th>Date</th>
+
+                            <th>Difficulté</th>
+
+                            <th>Finie</th>
+
+                            <th>Nombre de coups</th>
+
+                        </tr>
+
+                    </thead>
+
+                    <tbody>';
+
+        for($x = 0; isset($result_last_games[$x]); $x++) {
+
+            echo    '<tr>
+
+                        <td>' . $result_last_games[$x][1] . '</td>
+
+                        <td>' . $result_last_games[$x][2] . '</td>
+
+                        <td>' . $result_last_games[$x][3] . '</td>
+
+                        <td>' . $result_last_games[$x][4] . '</td>
+
+                    </tr>';
+        }
+
+        echo        '</tbody>
+
+                </table>';
 
     }
 

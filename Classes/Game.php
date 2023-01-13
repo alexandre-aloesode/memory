@@ -5,7 +5,7 @@
         /**
          * @var array contains card names
          */
-        private $characters = ['alice', 'kagura', 'pharsa', 'minotaur','valir','cyclops', 'natalia', 'grock', 'eudora', 'popol', 'yve', 'badang', 'karrie', 'moskov'];
+        private $characters = ['alice', 'kagura', 'pharsa', 'minotaur','valir','cyclops', 'natalia', 'grock', 'eudora', 'popol', 'yve', 'badang', 'karrie', 'moskov', 'nana', 'helcurt', 'layla', 'clint'];
         
         public $level;
 
@@ -23,7 +23,7 @@
         }
 
         /**
-         * @var function 
+         * @var function returns shuffled array with selected pairs
          */
         public function select_pairs() {
 
