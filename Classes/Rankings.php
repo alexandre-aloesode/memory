@@ -32,24 +32,95 @@ Class Ranking {
     
     public function display_ranking() {
 
-        // $request_users = "SELECT id, login FROM utilisateurs";
-        // $query_users = $this->bdd->prepare($request_users);
-        // $query_users->execute();
-        // $result_request_users = $query_users->fetchAll();
+        if($this->level == 'Novice') {
 
-        // for($u = 0; isset($result_request_users[$u]); $u++) {
-        //     $request_user_games = "SELECT SUM("
-        // }
+            require './Classes/Best_players_Novice.php';
 
+        }
+
+        if($this->level == 'Intermediaire') {
+
+            require './Classes/Best_players_Interm.php';
+            
+        }
+
+        if($this->level == 'Expert') {
+
+            require './Classes/Best_players_Expert.php';
+            
+        }
+
+        $request_users = "SELECT id FROM utilisateurs";
+        $query_users = $this->bdd->prepare($request_users);
+        $query_users->execute();
+        $result_users = $query_users->fetchAll();
+
+        ${'best_players_' . $this->level} = [];
+
+        for($u = 0; isset($result_users[$u]); $u++) {
+
+            ${'parties_user' . $result_users[$u][0]} = 0;
+
+            ${'coups_user' . $result_users[$u][0]} = 0;
+
+            $request_games = "SELECT * FROM parties INNER JOIN utilisateurs on parties.id_utilisateur = utilisateurs.id WHERE parties.difficulte = '$this->level'";
+            $query_games = $this->bdd->prepare($request_games);
+            $query_games->execute();
+            $result_games = $query_games->fetchAll();
+
+            for($i = 0; isset($result_games[$i]); $i++){
+
+                if($result_users[$u][0] == $result_games[$i][5]) {
+
+                    ${'parties_user' . $result_users[$u][0]}++;
+
+                    ${'coups_user' . $result_users[$u][0]} = ${'coups_user' . $result_users[$u][0]} + $result_games[$i][4];
+
+                    ${'name_user' . $result_users[$u][0]} = $result_games[$i][7];
+
+                }
+
+            }
+
+            if(${'parties_user' . $result_users[$u][0]} > 0) {
+
+                if($this->level == 'Novice') {
+
+                array_push(${'best_players_' . $this->level}, new Best_Player_Novice(${'name_user' . $result_users[$u][0]}, ${'parties_user' . $result_users[$u][0]}, ${'coups_user' . $result_users[$u][0]} / ${'parties_user' . $result_users[$u][0]}));
+
+                }
+
+                if($this->level == 'Intermediaire') {
+                    
+                    array_push(${'best_players_' . $this->level}, new Best_Player_Intermediaire(${'name_user' . $result_users[$u][0]}, ${'parties_user' . $result_users[$u][0]}, ${'coups_user' . $result_users[$u][0]} / ${'parties_user' . $result_users[$u][0]}));
+    
+                }
+
+                if($this->level == 'Expert') {
+                    
+                    array_push(${'best_players_' . $this->level}, new Best_Player_Expert(${'name_user' . $result_users[$u][0]}, ${'parties_user' . $result_users[$u][0]}, ${'coups_user' . $result_users[$u][0]} / ${'parties_user' . $result_users[$u][0]}));
+    
+                }
+            }
+        }
+
+
+        for($x = 0; isset(${'best_players_' . $this->level}[$x]); $x++) {
+
+            for($y = 0; isset(${'best_players_' . $this->level}[$y]); $y++) {
+
+                if(${'best_players_' . $this->level}[$y]->average_count > ${'best_players_' . $this->level}[$x]->average_count) {
+
+                    $temp = ${'best_players_' . $this->level}[$x];
+
+                    ${'best_players_' . $this->level}[$x] = ${'best_players_' . $this->level}[$y];
+
+                    ${'best_players_' . $this->level}[$y] = $temp;
+                }
+            
+            }
+        }
         
-        $request_ranking = "SELECT COUNT(parties.id), SUM(parties.coups), parties.id_utilisateur, parties.difficulte, utilisateurs.id, utilisateurs.login FROM parties
-        INNER JOIN utilisateurs on parties.id_utilisateur = utilisateurs.id
-        WHERE parties.difficulte = '$this->level'";
-
-        $query_ranking = $this->bdd->prepare($request_ranking);
-        $query_ranking->execute();
-
-        $result_ranking = $query_ranking->fetchAll();
 
         echo    '<table class="game_table">
 
@@ -71,15 +142,16 @@ Class Ranking {
 
                     <tbody>';
 
-        for($x = 0; isset($result_ranking[$x]); $x++) {
+        for($n = 0; isset(${'best_players_' . $this->level}[$n]); $n++) {
+
 
             echo        '<tr>
 
-                            <td>' . $result_ranking[$x][5] . '</td>
+                            <td>' . ${'best_players_' . $this->level}[$n]->name . '</td>
 
-                            <td>' . $result_ranking[$x][0] . '</td>
+                            <td>' . ${'best_players_' . $this->level}[$n]->games . '</td>
 
-                            <td>' . $result_ranking[$x][1] . '</td>
+                            <td>' . ${'best_players_' . $this->level}[$n]->average_count . '</td>
 
                         </tr>';
         }

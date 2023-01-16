@@ -84,6 +84,7 @@ nav {
 /* --------------------------------------------------------------------------------Index -----------------------------------------------------------------------------------*/
 
 #tables {
+
     display: flex;
     flex-direction: column; 
 }
@@ -91,7 +92,6 @@ nav {
     .game_table {
         margin-bottom: 80px;
         border-collapse: collapse;
-        border: solid 2px red;
     }
 
     .game_table td {
